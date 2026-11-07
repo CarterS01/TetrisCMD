@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+// Resume at 12:43
 #include <Windows.h>
 
 wstring tetromino[7];
@@ -11,7 +11,8 @@ unsigned char *pField = nullptr;
 int nScreenWidth = 80;      // Console Screen Size X (columns)
 int nScreenHeight = 30;     // Console Screen Size Y (rows)
 
-int Rotate(int px, int py, int r) {
+int Rotate(int px, int py, int r) 
+{
     switch (r % 4) 
     {
     case 0: return py * 4 + px;         // 0 degrees
@@ -22,7 +23,8 @@ int Rotate(int px, int py, int r) {
     return 0
 }
 
-int main() {
+int main() 
+{
 
     //Create assets
     tetromino[0].append(L"..X.")
@@ -70,6 +72,19 @@ int main() {
     HANDLE hConsole = CreateConsoleScreenBuffer(GENERIC_READ | GENERIC_WRITE, 0, NULL, CONSOLE_TEXTMODE_BUFFER, NULL);
     SetConsoleActiveScreenBuffer(hConsole);
     DWORD dwBytesWritten = 0;
+
+    bool bGameOver = false; 
+
+    while (!bGameOver) 
+    {
+        // Draw Field
+        for (int x = 0; x < nFieldWidth; x++)
+            for (int y = 0; y < nFieldHeight; y++)
+                screen[(y + 2)*nScreenWidth + (x + 2)] = L" ABCDEFG=#"[pField[y*nFieldWidth + x]];
+    
+        // Display Frame
+        WriteConsoleOutputCharacter(hConsole, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);
+    }
 
     // Display Frame
     WriteConsoleOutputCharacter(hConsole, screen, nScreenWidth * nScreenHeight, { 0,0 }, &dwBytesWritten);
